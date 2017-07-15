@@ -20,6 +20,11 @@ export default class MediaLoader extends PureComponent {
     img.src = this.props.media
     img.onload = () => {
       this.setState({status: true})
+
+      // Успешно загружено
+      if (typeof this.props.onSuccess === 'function') {
+        this.props.onSuccess()
+      }
     }
   }
 
@@ -47,5 +52,5 @@ MediaLoader.propTypes = {
 
 MediaLoader.defaultProps = {
   loader: 'Загрузка...',
-  contents: ['https://facebook.github.io/react/img/logo_og.png']
+  contents: 'https://facebook.github.io/react/img/logo_og.png'
 }
