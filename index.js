@@ -1,25 +1,25 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
-export default class MediaLoader extends PureComponent {
+export default class Loader extends PureComponent {
   constructor (props) {
     super(props)
 
     this.state = {
-      status: false
+      visible: false
     }
   }
 
-  componentDidMount () {
+  componentWillMount () {
     this.onLoadImages()
   }
 
   // Загрузка изображения
   onLoadImages () {
     let img = new Image()
-    img.src = this.props.media
+    img.src = this.props.url
     img.onload = () => {
-      this.setState({status: true})
+      this.setState({visible: true})
 
       // Успешно загружено
       if (typeof this.props.onSuccess === 'function') {
@@ -28,14 +28,13 @@ export default class MediaLoader extends PureComponent {
     }
   }
 
-  // Загрузка видео
-  onLoadVideo () {
-
+  close () {
+    this.setState({visible: false})
   }
 
   render () {
     // Отображаем Loader
-    if (!this.state.status) {
+    if (!this.props.close) {
       return this.props.loader
     }
     // Если контент загружен, отображаем дочерние элементы
@@ -43,14 +42,14 @@ export default class MediaLoader extends PureComponent {
   }
 }
 
-MediaLoader.propTypes = {
+Loader.propTypes = {
   loader: PropTypes.node.isRequired,
-  media: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
   onSuccess: PropTypes.func,
   onError: PropTypes.func
 }
 
-MediaLoader.defaultProps = {
+Loader.defaultProps = {
   loader: 'Загрузка...',
   contents: 'https://facebook.github.io/react/img/logo_og.png'
 }
